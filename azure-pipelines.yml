@@ -39,8 +39,8 @@ steps:
 
 - task: AzureFunctionApp@1
   inputs:
-    azureSubscription: '$(azureServiceConnection)'
-    appType: 'functionAppLinux'  # or 'functionApp' for Windows
-    appName: '$(functionAppName)'
+    azureSubscription: 'Azure subscription 1 (525c7c1f-f5e9-4bf4-8d7a-5b7a06889a12)'
+    appType: 'functionAppLinux'
+    appName: 'rbac'
     package: '$(zipPath)'
   displayName: 'Deploy to Azure Function App'
