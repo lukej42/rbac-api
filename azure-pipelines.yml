@@ -19,7 +19,7 @@ variables:
 
   # Agent VM image name
   vmImageName: 'ubuntu-latest'
-  projectRoot: 'rbac-api'
+  projectRoot: '.'
   zipPath: '$(Build.ArtifactStagingDirectory)/function.zip'
 
 steps:
@@ -27,12 +27,6 @@ steps:
 - task: UsePythonVersion@0
   inputs:
     versionSpec: '3.11'
-
-- script: |
-    pwd
-    ls -la
-    ls -la rbac-api
-  displayName: 'Debug: Check current directory and files'
 
 - script: |
     python -m pip install --upgrade pip
