@@ -1,0 +1,46 @@
+# Python Function App to Linux on Azure
+# Build a Python function app and deploy it to Azure as a Linux function app.
+# Add steps that analyze code, save build artifacts, deploy, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/python
+
+trigger:
+  branches:
+    include:
+      - main
+
+variables:
+  # Azure Resource Manager connection created during pipeline creation
+  azureSubscription: '44914b05-b22f-44c5-8fe1-ddf8d028461a'
+
+  # Function app name
+  functionAppName: 'rbac'
+
+  # Agent VM image name
+  vmImageName: 'ubuntu-latest'
+
+steps:
+- task: UsePythonVersion@0
+  inputs:
+    versionSpec: '3.11'
+
+- script: |
+    python -m pip install --upgrade pip
+    pip install -r $(projectRoot)/requirements.txt --target=$(projectRoot)
+  displayName: 'Install Python Dependencies'
+
+- task: ArchiveFiles@2
+  inputs:
+    rootFolderOrFile: '$(projectRoot)'
+    includeRootFolder: false
+    archiveType: 'zip'
+    archiveFile: '$(zipPath)'
+    replaceExistingArchive: true
+  displayName: 'Zip Function App'
+
+- task: AzureFunctionApp@1
+  inputs:
+    azureSubscription: '$(azureServiceConnection)'
+    appType: 'functionAppLinux'  # or 'functionApp' for Windows
+    appName: '$(functionAppName)'
+    package: '$(zipPath)'
+  displayName: 'Deploy to Azure Function App'
