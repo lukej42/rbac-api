@@ -25,8 +25,10 @@ steps:
 
 - script: |
     python -m pip install --upgrade pip
-    pip install -r $(projectRoot)/requirements.txt --target=$(projectRoot)
+    pip install -r "$PROJECT_ROOT/requirements.txt" --target "$PROJECT_ROOT"
   displayName: 'Install Python Dependencies'
+  env:
+    PROJECT_ROOT: $(projectRoot)
 
 - task: ArchiveFiles@2
   inputs:
